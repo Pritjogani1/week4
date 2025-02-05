@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <style>
+      #expenselist {
+    margin: 20px;
+    padding: 10px;
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+.expense-item {
+    margin: 10px 0;
+    padding: 10px;
+    background-color: #e2e2e2;
+    border-radius: 3px;
+    font-size: 16px;
+    font-family: Arial, sans-serif;
+    color: #333;
+}
+
+.expense-item:hover {
+    background-color: #d1d1d1;
+    cursor: pointer;
+}
+
+    </style>
+</head>
+<body>
+    <h1>Expense Trakker</h1>
+    <form action="">
+      <button id="creategroup">create group</button>
+
+      <input type="text" id="addcategory" placeholder="add categories">
+      <button id="add">add</button>
+      <br>
+
+      <select name="categories" id="categories">
+      </select>
+      <br>
+      <label for="money">Expense</label>
+      <input type="number" id="money" placeholder="enter expense">
+      <br>
+      <label for="Description">Description</label>
+      <input type="text" id="Description" placeholder="enter expense">
+      <br>
+      <label for="date">Date</label>
+      <input type="date" id="date">
+<br>
+   
+<button  id="submit">submit</button>
+
+    
+    
+    </form>
+<script type="text/javascript">
+   
+   $(document).ready(function(){
+
+  $("#creategroup").on("click", function () {
+    event.preventDefault();
+    $("#addcategory").toggle();
+    $("#add").toggle();
+  });
+  
+
+  const group = JSON.parse(localStorage.getItem('group')) || [];
+  const expense = JSON.parse(localStorage.getItem('expense')) || [];
+
+  $("#add").click(function(){
+    event.preventDefault();
+    const value = $("#addcategory").val();
+    group.push(value);
+    localStorage.setItem('group', JSON.stringify(group));
+    $('#categories').append(
+      $('<option>', {
+        value : value,
+        text : value
+      })
+    )
+    $("#expenselist").append('<div class="expense-item">' + value + '</div>');
+  })
+  
+    group.forEach(function(item){
+    $("#expenselist").append('<div class="expense-item">' + item + '</div>');
+    $('#categories').append(
+      $('<option>', {
+        value : item,
+        text : item
+      })
+
+    )
+  })
+
+
+
+
+
+  //expense logic heree
+  let exp = {}
+
+
+  // let expeses = [];
+  $("#submit").click(function(){
+
+    event.preventDefault();
+
+    exp.money = $("#money").val(); 
+    exp.Description = $("#Description").val(); 
+    exp.groupname = $("#categories").val(); 
+    exp.date = $("#date").val();
+    expense.push(exp);
+    console.log(expense);
+    localStorage.setItem('expense', JSON.stringify(expense));
+  })
+  console.log(expense);
+});
+
+
+  
+</script>
+  
+    
+  
+</body>
+</html>
